@@ -199,7 +199,7 @@ export const audiobookApi = {
   },
 
   // 获取有声书详情
-  getAudiobookDetail: async (id: string): Promise<AudiobookDetailResponse> {
+  getAudiobookDetail: async (id: string): Promise<AudiobookDetailResponse> => {
     // 尝试从缓存获取数据
     const cacheKey = CACHE_KEYS.AUDIOBOOK_DETAIL(id)
     const cachedData = getWithExpiry<AudiobookDetailResponse>(cacheKey)
@@ -378,7 +378,7 @@ axiosInstance.interceptors.request.use(
             config,
           },
         }
-      } catch (error) {
+      } catch (error:any) {
         if (error.response) {
           throw error
         }
