@@ -201,6 +201,7 @@ export default function Music({ setHideNavigation }: MusicProps) {
       <PlaylistDetail id={selectedPlaylist} onBack={handleBackFromPlaylist} setHideNavigation={setHideNavigation} />
     )
   }
+ 
 
   // 显示骨架屏
   if (isLoading) {
@@ -228,7 +229,7 @@ export default function Music({ setHideNavigation }: MusicProps) {
             placeholder="李灿烈签名专辑"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 bg-card/60 border-none rounded-full h-12 focus:outline-none focus:ring-0 focus:border-0"
+            className="pl-10 bg-card/60 border-none rounded-full h-11 focus:outline-none focus:ring-0 focus:border-0"
             readOnly
             onClick={handleSearchClick}
           />

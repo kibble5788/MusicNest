@@ -23,7 +23,6 @@ export default function MessageCenter({ onBack, setHideNavigation }: MessageCent
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null)
   const [activeTab, setActiveTab] = useState("all")
-  const scrollRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (setHideNavigation) {
@@ -115,7 +114,7 @@ export default function MessageCenter({ onBack, setHideNavigation }: MessageCent
   )
 
   return (
-    <div className="min-h-screen pb-16 pt-14" {...pullToRefreshProps} ref={scrollRef}>
+    <div className="min-h-screen pb-16 pt-14" {...pullToRefreshProps} >
       {/* 使用共用的PageHeader组件 */}
       <PageHeader title="消息中心" onBack={onBack} rightContent={headerRightContent} />
 

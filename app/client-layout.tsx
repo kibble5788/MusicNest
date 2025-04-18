@@ -3,8 +3,7 @@
 import type React from "react"
 import { MusicProvider } from "@/context/music-context"
 import { AuthProvider } from "@/context/auth-context"
-import { DisableInteractions } from "@/components/disable-interactions"
-import { useEffect } from "react"
+ import { useEffect } from "react"
 import { Toaster } from "react-hot-toast"
 
 // 全局音频元素
@@ -38,8 +37,7 @@ export default function ClientLayout({
         <MusicProvider>
           {children}
           <GlobalAudio />
-          <DisableInteractions />
-        </MusicProvider>
+         </MusicProvider>
       </AuthProvider>
       <Toaster
         position="bottom-center"

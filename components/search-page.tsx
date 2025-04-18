@@ -318,11 +318,12 @@ export default function SearchPage({ type, onBack, setHideNavigation }: SearchPa
   return (
     <div className="min-h-screen pb-20">
       {/* 搜索栏 */}
-      <div className="p-4 sticky top-0 z-10">
+      <div className="p-4 pr-0 sticky top-0 z-10">
         <form onSubmit={handleSearch} className="flex items-center gap-2">
           <Button type="button" variant="ghost" size="icon" onClick={onBack} className="text-gray-400">
-            <ChevronLeft className="h-6 w-6" />
+            <ChevronLeft className="h-6 w-6 text-white" />
           </Button>
+           
 
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 h-4 w-4" />
@@ -335,7 +336,7 @@ export default function SearchPage({ type, onBack, setHideNavigation }: SearchPa
                 setShowClearButton(!!e.target.value)
               }}
               onFocus={() => setInputFocused(true)}
-              className="pl-10 pr-10 py-6 bg-gray-800 border-none rounded-full text-white focus:outline-none focus:ring-0 focus:border-0"
+              className="pl-10 pr-10 py-2 bg-gray-800 border-none rounded-full text-white focus:outline-none focus:ring-0 focus:border-0"
               autoFocus
             />
             {showClearButton && (
@@ -349,10 +350,7 @@ export default function SearchPage({ type, onBack, setHideNavigation }: SearchPa
             )}
           </div>
 
-          <Button type="button" variant="ghost" size="icon" className="text-gray-400">
-            <Mic className="h-5 w-5" />
-          </Button>
-
+        
           <Button type="button" onClick={onBack} variant="ghost" className="text-gray-400">
             取消
           </Button>

@@ -44,13 +44,13 @@ const mockUsers: User[] = [
     id: "user1",
     username: "demo",
     nickname: "小灰灰",
-    avatar: "/profile-avatar.png",
+    avatar: "https://img1.baidu.com/it/u=3598104138,3632108415&fm=253&fmt=auto&app=120&f=JPEG?w=800&h=800",
   },
   {
     id: "user2",
     username: "admin",
     nickname: "管理员",
-    avatar: "/digital-administrator.png",
+    avatar: "https://img1.baidu.com/it/u=3598104138,3632108415&fm=253&fmt=auto&app=120&f=JPEG?w=800&h=800",
   },
 ]
 
@@ -216,12 +216,8 @@ export const userApi = {
         }
       }
 
-      // Simulate network delay
-      const networkSuccess = await simulateNetworkCondition()
-
-      if (!networkSuccess) {
-        throw new Error("网络请求失败")
-      }
+   
+ 
 
       // Find user in mock database
       const user = mockUsers.find((u) => u.id === userId)

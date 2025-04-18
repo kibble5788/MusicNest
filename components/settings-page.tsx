@@ -19,7 +19,6 @@ export default function SettingsPage({ onBack, setHideNavigation }: SettingsPage
   const [autoPlay, setAutoPlay] = useState(true)
   const [highQuality, setHighQuality] = useState(false)
   const [dataUsage, setDataUsage] = useState(false)
-  const scrollRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (setHideNavigation) {
@@ -40,7 +39,7 @@ export default function SettingsPage({ onBack, setHideNavigation }: SettingsPage
   }
 
   return (
-    <div className="min-h-screen pb-16 pt-14 overflow-auto" ref={scrollRef}>
+    <div className="min-h-screen pb-16 pt-14 overflow-auto" >
       {/* 使用共用的PageHeader组件 */}
       <PageHeader title="设置" onBack={onBack} />
 

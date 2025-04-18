@@ -1,14 +1,15 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useLayoutEffect } from "react"
 import { Heart, Share2, Play, Download, MoreVertical } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { LoadingSpinner } from "@/components/loading-spinner"
 import { useMusic } from "@/context/music-context"
 import { cn } from "@/lib/utils"
 import type { Song } from "@/types/song"
 import { PageHeader } from "@/components/page-header"
+import type React from "react"
 
+ 
 // Update the PlaylistDetailProps interface to include setHideNavigation
 interface PlaylistDetailProps {
   id: string
@@ -29,23 +30,30 @@ export default function PlaylistDetail({ id, onBack, setHideNavigation }: Playli
     songCount: number
     songs: Song[]
   } | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  
   const [isFavorite, setIsFavorite] = useState(false)
-  const scrollRef = useRef<HTMLDivElement>(null)
+  const [isMounted, setIsMounted] = useState(false)
+
+  // 组件挂载后标记为已挂载状态，避免SSR不匹配
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
+ 
 
   // Hide navigation when this component mounts
   useEffect(() => {
     if (setHideNavigation) {
       setHideNavigation(true)
     }
-
+  
     // Show navigation again when component unmounts
     return () => {
       if (setHideNavigation) {
         setHideNavigation(false)
       }
     }
-  }, [setHideNavigation])
+  }, [setHideNavigation, id])
 
   // Mock data for special playlists
   const mockFavorites: Song[] = [
@@ -113,10 +121,8 @@ export default function PlaylistDetail({ id, onBack, setHideNavigation }: Playli
 
   useEffect(() => {
     const fetchPlaylist = async () => {
-      setIsLoading(true)
+      
       try {
-        // 模拟API请求
-        await new Promise((resolve) => setTimeout(resolve, 800))
 
         // 处理特殊歌单类型
         if (id === "favorites") {
@@ -232,9 +238,7 @@ export default function PlaylistDetail({ id, onBack, setHideNavigation }: Playli
         }
       } catch (error) {
         console.error("获取歌单详情失败:", error)
-      } finally {
-        setIsLoading(false)
-      }
+      } 
     }
 
     fetchPlaylist()
@@ -254,13 +258,7 @@ export default function PlaylistDetail({ id, onBack, setHideNavigation }: Playli
     setIsFavorite(!isFavorite)
   }
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <LoadingSpinner />
-      </div>
-    )
-  }
+ 
 
   if (!playlist) {
     return (
@@ -273,10 +271,20 @@ export default function PlaylistDetail({ id, onBack, setHideNavigation }: Playli
     )
   }
 
+  // 确保只在客户端渲染完整内容
+  if (!isMounted) {
+    return <div className="h-screen bg-black"></div>
+  }
+
   return (
-    <div className="min-h-screen pb-24 pt-14" ref={scrollRef}>
+    <div 
+      className="pb-24 pt-14 overflow-y-auto h-full"
+    >
       {/* 使用共用的PageHeader组件 */}
-      <PageHeader title={playlist.title} onBack={onBack} showGradient={true} scrollRef={scrollRef} />
+      <PageHeader 
+        title={playlist.title} 
+        onBack={onBack} 
+      />
 
       {/* 歌单信息 */}
       <div className="px-4 pb-6">

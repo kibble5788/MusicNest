@@ -27,7 +27,6 @@ interface MessageDetailProps {
 export default function MessageDetail({ message, onBack, ...props }: MessageDetailProps) {
   const { user } = useAuth()
   const [isDeleting, setIsDeleting] = useState(false)
-  const scrollRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (props.setHideNavigation) {
@@ -74,7 +73,7 @@ export default function MessageDetail({ message, onBack, ...props }: MessageDeta
   )
 
   return (
-    <div className="min-h-screen text-white flex flex-col pt-14" ref={scrollRef}>
+    <div className="min-h-screen text-white flex flex-col pt-14" >
       {/* 使用共用的PageHeader组件 */}
       <PageHeader title={message.type} onBack={onBack} rightContent={headerRightContent} />
 

@@ -4,8 +4,7 @@ import { Suspense, lazy, useState, useEffect } from "react"
 import { MusicPlayer } from "@/components/music-player"
 import { Navigation } from "@/components/navigation"
 import { SkeletonProfilePage } from "@/components/skeletons/skeleton-profile-page"
-import { DisableInteractions } from "@/components/disable-interactions"
-
+ 
 // Lazy load module components
 const Music = lazy(() => import("@/components/music"))
 const Audiobooks = lazy(() => import("@/components/audiobooks"))
@@ -59,8 +58,7 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col">
-      <DisableInteractions />
-      <div className="flex-1 overflow-hidden pb-24">
+       <div className="flex-1 overflow-hidden pb-24">
         {/* Music page */}
         {activeTab === "music" && (
           <div className="p-4">

@@ -48,8 +48,8 @@ interface MyProfileProps {
 
 export default function MyProfile({ setHideNavigation }: MyProfileProps) {
   const { user, isAuthenticated, isLoading, loginError, login, logout } = useAuth()
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
+  const [username, setUsername] = useState("demo")
+  const [password, setPassword] = useState("123456")
   const [isLoggingIn, setIsLoggingIn] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [activeTab, setActiveTab] = useState("favorites")
@@ -61,7 +61,6 @@ export default function MyProfile({ setHideNavigation }: MyProfileProps) {
   const [isLoadingProfile, setIsLoadingProfile] = useState(false)
   const [isLoadingPlaylists, setIsLoadingPlaylists] = useState(false)
   const [showImportPlaylist, setShowImportPlaylist] = useState(false)
-  const [scrollRef, setScrollRef] = useState<React.RefObject<HTMLDivElement>>(useRef<HTMLDivElement>(null))
 
   // 在 MyProfile 组件中添加状态
   const [selectedAudiobook, setSelectedAudiobook] = useState<string | null>(null)
@@ -395,7 +394,7 @@ export default function MyProfile({ setHideNavigation }: MyProfileProps) {
           </Button>
 
           <p className="text-center text-sm text-muted-foreground mt-4">
-            提示：输入 demo/123456 可直接登录，或任意用户名和6位以上密码注册新账号
+            提示：输入 demo/123456 可直接登录 
           </p>
         </form>
       </div>
@@ -461,7 +460,7 @@ export default function MyProfile({ setHideNavigation }: MyProfileProps) {
   const favoritePlaylistsCount = userPlaylists.filter((p) => p.isPrivate).length
 
   return (
-    <div className="min-h-screen pb-20 pt-14 px-0 overflow-auto" {...pullToRefreshProps} ref={scrollRef}>
+    <div className="min-h-screen pb-20 pt-14 px-0 overflow-auto" {...pullToRefreshProps} >
       {" "}
       {isRefreshing && (
         <div className="flex items-center justify-center py-4">
@@ -474,8 +473,7 @@ export default function MyProfile({ setHideNavigation }: MyProfileProps) {
         title="个人中心"
         onBack={handleBack}
         rightContent={headerRightContent}
-        showGradient={true}
-        scrollRef={scrollRef}
+         
       />
       {/* 用户信息 */}{" "}
       <div className="flex items-center px-4 py-4">
@@ -530,8 +528,8 @@ export default function MyProfile({ setHideNavigation }: MyProfileProps) {
       <div className="grid grid-cols-3 gap-2 mx-2 mb-4">
         <div
           className={cn(
-            "rounded-xl p-4 flex flex-col justify-between h-36",
-            activeTab === "favorites" ? "bg-pink-400" : "bg-[#2c2c3a]",
+            "rounded-xl p-4 flex flex-col justify-between h-36 bg-pink-400",
+            
           )}
           onClick={() => handleTabClick("favorites")}
         >
@@ -550,8 +548,8 @@ export default function MyProfile({ setHideNavigation }: MyProfileProps) {
         </div>{" "}
         <div
           className={cn(
-            "rounded-xl p-4 flex flex-col justify-between h-36",
-            activeTab === "recent" ? "bg-green-400" : "bg-[#2c2c3a]",
+            "rounded-xl p-4 flex flex-col justify-between h-36 bg-green-400",
+               
           )}
           onClick={() => handleTabClick("recent")}
         >
@@ -570,8 +568,8 @@ export default function MyProfile({ setHideNavigation }: MyProfileProps) {
         </div>{" "}
         <div
           className={cn(
-            "rounded-xl p-4 flex flex-col justify-between h-36",
-            activeTab === "local" ? "bg-purple-400" : "bg-[#2c2c3a]",
+            "rounded-xl p-4 flex flex-col justify-between h-36 bg-purple-400",
+             
           )}
           onClick={() => handleTabClick("local")}
         >
