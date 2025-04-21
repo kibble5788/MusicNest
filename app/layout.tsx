@@ -4,7 +4,6 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import { MusicProvider } from "@/context/music-context"
 import { AuthProvider } from "@/context/auth-context"
-import Head from "next/head"
 
 const inter = Inter({ subsets: ["latin"] })
 
