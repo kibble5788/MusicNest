@@ -1,78 +1,91 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState, useEffect } from "react"
-import { ChevronLeft, Search, Mic, X, User, Music, Hash, Scan } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { cn } from "@/lib/utils"
-import { SongCard } from "@/components/song-card"
-import { mockSearch } from "@/lib/mock-data"
-import type { Song } from "@/types/song"
-import { SkeletonSearchResults } from "@/components/skeletons/skeleton-search-results"
-import { SkeletonSearchPage } from "@/components/skeletons/skeleton-search-page"
+import { useState, useEffect } from "react";
+import {
+  ChevronLeft,
+  Search,
+  Mic,
+  X,
+  User,
+  Music,
+  Hash,
+  Scan,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
+import { SongCard } from "@/components/song-card";
+import { mockSearch } from "@/lib/mock-data";
+import type { Song } from "@/types/song";
+import { SkeletonSearchResults } from "@/components/skeletons/skeleton-search-results";
+import { SkeletonSearchPage } from "@/components/skeletons/skeleton-search-page";
 
 // Define the types
 interface SearchHistory {
-  id: string
-  text: string
+  id: string;
+  text: string;
 }
 
 interface PopularSearch {
-  id: string
-  text: string
-  icon?: string
-  hot?: boolean
+  id: string;
+  text: string;
+  icon?: string;
+  hot?: boolean;
 }
 
 interface Discovery {
-  id: string
-  title: string
-  description: string
-  image?: string
-  tag?: string
+  id: string;
+  title: string;
+  description: string;
+  image?: string;
+  tag?: string;
 }
 
 // Update the SearchPageProps interface to include setHideNavigation
 interface SearchPageProps {
-  type: "music" | "audiobook"
-  onBack: () => void
-  setHideNavigation?: (hide: boolean) => void
+  type: "music" | "audiobook";
+  onBack: () => void;
+  setHideNavigation?: (hide: boolean) => void;
 }
 
-export default function SearchPage({ type, onBack, setHideNavigation }: SearchPageProps) {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [isSearching, setIsSearching] = useState(false)
-  const [searchResults, setSearchResults] = useState<Song[]>([])
-  const [searchHistory, setSearchHistory] = useState<SearchHistory[]>([])
-  const [popularSearches, setPopularSearches] = useState<PopularSearch[]>([])
-  const [discoveries, setDiscoveries] = useState<Discovery[]>([])
-  const [showClearButton, setShowClearButton] = useState(false)
-  const [inputFocused, setInputFocused] = useState(false)
-  const [isInitialLoading, setIsInitialLoading] = useState(true)
+export default function SearchPage({
+  type,
+  onBack,
+  setHideNavigation,
+}: SearchPageProps) {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchResults, setSearchResults] = useState<Song[]>([]);
+  const [searchHistory, setSearchHistory] = useState<SearchHistory[]>([]);
+  const [popularSearches, setPopularSearches] = useState<PopularSearch[]>([]);
+  const [discoveries, setDiscoveries] = useState<Discovery[]>([]);
+  const [showClearButton, setShowClearButton] = useState(false);
+  const [inputFocused, setInputFocused] = useState(false);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
 
   // Hide navigation when this component mounts
   useEffect(() => {
     if (setHideNavigation) {
-      setHideNavigation(true)
+      setHideNavigation(true);
     }
 
     // Show navigation again when component unmounts
     return () => {
       if (setHideNavigation) {
-        setHideNavigation(false)
+        setHideNavigation(false);
       }
-    }
-  }, [setHideNavigation])
+    };
+  }, [setHideNavigation]);
 
   // Load search history from localStorage
   useEffect(() => {
     const loadData = async () => {
       try {
-        const storedHistory = localStorage.getItem(`${type}-search-history`)
+        const storedHistory = localStorage.getItem(`${type}-search-history`);
         if (storedHistory) {
-          setSearchHistory(JSON.parse(storedHistory))
+          setSearchHistory(JSON.parse(storedHistory));
         }
 
         // Set mock data based on type
@@ -86,7 +99,7 @@ export default function SearchPage({ type, onBack, setHideNavigation }: SearchPa
             { id: "6", text: "时代少年团", hot: false },
             { id: "7", text: "许嵩 巡演歌单", hot: false },
             { id: "8", text: "大山", hot: false },
-          ])
+          ]);
 
           setDiscoveries([
             {
@@ -123,7 +136,7 @@ export default function SearchPage({ type, onBack, setHideNavigation }: SearchPa
               description: "立即聆听>>",
               image: "/music-search-promo-5.png",
             },
-          ])
+          ]);
         } else {
           // Audiobook specific popular searches
           setPopularSearches([
@@ -135,7 +148,7 @@ export default function SearchPage({ type, onBack, setHideNavigation }: SearchPa
             { id: "6", text: "天官赐福", hot: false },
             { id: "7", text: "斗破苍穹", hot: false },
             { id: "8", text: "哈利波特", hot: false },
-          ])
+          ]);
 
           // Audiobook specific discoveries
           setDiscoveries([
@@ -160,159 +173,180 @@ export default function SearchPage({ type, onBack, setHideNavigation }: SearchPa
               image: "/audiobook-search-promo-3.png",
               tag: "热门",
             },
-          ])
+          ]);
         }
       } catch (error) {
-        console.error("Failed to load search data:", error)
+        console.error("Failed to load search data:", error);
       } finally {
         // Add a small delay to simulate loading
         setTimeout(() => {
-          setIsInitialLoading(false)
-        }, 500)
+          setIsInitialLoading(false);
+        }, 500);
       }
-    }
+    };
 
-    loadData()
-  }, [type])
+    loadData();
+  }, [type]);
 
   const handleSearch = async (e?: React.FormEvent) => {
     if (e) {
-      e.preventDefault()
+      e.preventDefault();
     }
 
-    if (!searchTerm.trim()) return
+    if (!searchTerm.trim()) return;
 
-    setIsSearching(true)
-    setSearchResults([]) // Clear previous results while searching
+    setIsSearching(true);
+    setSearchResults([]); // Clear previous results while searching
 
     try {
       // 模拟API请求
-      const results = await mockSearch(searchTerm)
+      const results = await mockSearch(searchTerm);
 
       // 根据类型选择不同的搜索结果
       if (type === "music") {
-        setSearchResults([...results.qq, ...results.netease])
+        setSearchResults([...results.qq, ...results.netease]);
       } else {
-        setSearchResults(results.audiobooks)
+        setSearchResults(results.audiobooks);
       }
 
       // 添加到搜索历史
-      const newHistory = { id: Date.now().toString(), text: searchTerm }
-      const updatedHistory = [newHistory, ...searchHistory.filter((item) => item.text !== searchTerm).slice(0, 9)]
-      setSearchHistory(updatedHistory)
+      const newHistory = { id: "", text: searchTerm };
+      const updatedHistory = [
+        newHistory,
+        ...searchHistory.filter((item) => item.text !== searchTerm).slice(0, 9),
+      ];
+      setSearchHistory(updatedHistory);
 
       try {
-        localStorage.setItem(`${type}-search-history`, JSON.stringify(updatedHistory))
+        localStorage.setItem(
+          `${type}-search-history`,
+          JSON.stringify(updatedHistory)
+        );
       } catch (error) {
-        console.error("Failed to save search history:", error)
+        console.error("Failed to save search history:", error);
       }
     } catch (error) {
-      console.error("搜索失败:", error)
+      console.error("搜索失败:", error);
     } finally {
-      setIsSearching(false)
+      setIsSearching(false);
     }
-  }
+  };
 
   const handleHistoryItemClick = (text: string) => {
-    setSearchTerm(text)
+    setSearchTerm(text);
     // Immediately perform search with the selected text
     setTimeout(() => {
       // Using setTimeout to ensure the searchTerm is updated before searching
       const performSearch = async () => {
-        setIsSearching(true)
-        setSearchResults([]) // Clear previous results while searching
+        setIsSearching(true);
+        setSearchResults([]); // Clear previous results while searching
 
         try {
           // 模拟API请求
-          const results = await mockSearch(text)
+          const results = await mockSearch(text);
 
           // 根据类型选择不同的搜索结果
           if (type === "music") {
-            setSearchResults([...results.qq, ...results.netease])
+            setSearchResults([...results.qq, ...results.netease]);
           } else {
-            setSearchResults(results.audiobooks)
+            setSearchResults(results.audiobooks);
           }
 
           // Add to search history if not already at the top
-          if (!searchHistory.some((item) => item.text === text) || searchHistory[0].text !== text) {
-            const newHistory = { id: Date.now().toString(), text: text }
-            const updatedHistory = [newHistory, ...searchHistory.filter((item) => item.text !== text).slice(0, 9)]
-            setSearchHistory(updatedHistory)
+          if (
+            !searchHistory.some((item) => item.text === text) ||
+            searchHistory[0].text !== text
+          ) {
+            const newHistory = { id: "", text: text };
+            const updatedHistory = [
+              newHistory,
+              ...searchHistory.filter((item) => item.text !== text).slice(0, 9),
+            ];
+            setSearchHistory(updatedHistory);
 
             try {
-              localStorage.setItem(`${type}-search-history`, JSON.stringify(updatedHistory))
+              localStorage.setItem(
+                `${type}-search-history`,
+                JSON.stringify(updatedHistory)
+              );
             } catch (error) {
-              console.error("Failed to save search history:", error)
+              console.error("Failed to save search history:", error);
             }
           }
         } catch (error) {
-          console.error("搜索失败:", error)
+          console.error("搜索失败:", error);
         } finally {
-          setIsSearching(false)
+          setIsSearching(false);
         }
-      }
+      };
 
-      performSearch()
-    }, 0)
-  }
+      performSearch();
+    }, 0);
+  };
 
   const handlePopularSearchClick = (text: string) => {
-    setSearchTerm(text)
+    setSearchTerm(text);
     // Immediately perform search with the selected text
     setTimeout(() => {
       // Using setTimeout to ensure the searchTerm is updated before searching
       const performSearch = async () => {
-        setIsSearching(true)
-        setSearchResults([]) // Clear previous results while searching
+        setIsSearching(true);
+        setSearchResults([]); // Clear previous results while searching
 
         try {
           // 模拟API请求
-          const results = await mockSearch(text)
+          const results = await mockSearch(text);
 
           // 根据类型选择不同的搜索结果
           if (type === "music") {
-            setSearchResults([...results.qq, ...results.netease])
+            setSearchResults([...results.qq, ...results.netease]);
           } else {
-            setSearchResults(results.audiobooks)
+            setSearchResults(results.audiobooks);
           }
 
           // Add to search history
-          const newHistory = { id: Date.now().toString(), text: text }
-          const updatedHistory = [newHistory, ...searchHistory.filter((item) => item.text !== text).slice(0, 9)]
-          setSearchHistory(updatedHistory)
+          const newHistory = { id: "", text: text };
+          const updatedHistory = [
+            newHistory,
+            ...searchHistory.filter((item) => item.text !== text).slice(0, 9),
+          ];
+          setSearchHistory(updatedHistory);
 
           try {
-            localStorage.setItem(`${type}-search-history`, JSON.stringify(updatedHistory))
+            localStorage.setItem(
+              `${type}-search-history`,
+              JSON.stringify(updatedHistory)
+            );
           } catch (error) {
-            console.error("Failed to save search history:", error)
+            console.error("Failed to save search history:", error);
           }
         } catch (error) {
-          console.error("搜索失败:", error)
+          console.error("搜索失败:", error);
         } finally {
-          setIsSearching(false)
+          setIsSearching(false);
         }
-      }
+      };
 
-      performSearch()
-    }, 0)
-  }
+      performSearch();
+    }, 0);
+  };
 
   const clearSearchTerm = () => {
-    setSearchTerm("")
-    setSearchResults([])
-  }
+    setSearchTerm("");
+    setSearchResults([]);
+  };
 
   const clearSearchHistory = () => {
-    setSearchHistory([])
+    setSearchHistory([]);
     try {
-      localStorage.removeItem(`${type}-search-history`)
+      localStorage.removeItem(`${type}-search-history`);
     } catch (error) {
-      console.error("Failed to clear search history:", error)
+      console.error("Failed to clear search history:", error);
     }
-  }
+  };
 
   if (isInitialLoading) {
-    return <SkeletonSearchPage />
+    return <SkeletonSearchPage />;
   }
 
   return (
@@ -320,20 +354,27 @@ export default function SearchPage({ type, onBack, setHideNavigation }: SearchPa
       {/* 搜索栏 */}
       <div className="p-4 pr-0 sticky top-0 z-10">
         <form onSubmit={handleSearch} className="flex items-center gap-2">
-          <Button type="button" variant="ghost" size="icon" onClick={onBack} className="text-gray-400">
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            onClick={onBack}
+            className="text-gray-400"
+          >
             <ChevronLeft className="h-6 w-6 text-white" />
           </Button>
-           
 
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 h-4 w-4" />
             <Input
               type="text"
-              placeholder={type === "music" ? "别让爱凋落" : "搜索有声书、作者或分类"}
+              placeholder={
+                type === "music" ? "别让爱凋落" : "搜索有声书、作者或分类"
+              }
               value={searchTerm}
               onChange={(e) => {
-                setSearchTerm(e.target.value)
-                setShowClearButton(!!e.target.value)
+                setSearchTerm(e.target.value);
+                setShowClearButton(!!e.target.value);
               }}
               onFocus={() => setInputFocused(true)}
               className="pl-10 pr-10 py-2 bg-gray-800 border-none rounded-full text-white focus:outline-none focus:ring-0 focus:border-0"
@@ -350,8 +391,12 @@ export default function SearchPage({ type, onBack, setHideNavigation }: SearchPa
             )}
           </div>
 
-        
-          <Button type="button" onClick={onBack} variant="ghost" className="text-gray-400">
+          <Button
+            type="button"
+            onClick={onBack}
+            variant="ghost"
+            className="text-gray-400"
+          >
             取消
           </Button>
         </form>
@@ -364,21 +409,27 @@ export default function SearchPage({ type, onBack, setHideNavigation }: SearchPa
             <div className="w-12 h-12 rounded-full bg-[#1e1e1e] flex items-center justify-center">
               <User className="h-6 w-6 text-emerald-400" />
             </div>
-            <span className="text-xs mt-1">{type === "music" ? "歌手" : "作者"}</span>
+            <span className="text-xs mt-1">
+              {type === "music" ? "歌手" : "作者"}
+            </span>
           </div>
 
           <div className="flex flex-col items-center">
             <div className="w-12 h-12 rounded-full bg-[#1e1e1e] flex items-center justify-center">
               <Music className="h-6 w-6 text-emerald-400" />
             </div>
-            <span className="text-xs mt-1">{type === "music" ? "曲风" : "分类"}</span>
+            <span className="text-xs mt-1">
+              {type === "music" ? "曲风" : "分类"}
+            </span>
           </div>
 
           <div className="flex flex-col items-center">
             <div className="w-12 h-12 rounded-full bg-[#1e1e1e] flex items-center justify-center">
               <Hash className="h-6 w-6 text-emerald-400" />
             </div>
-            <span className="text-xs mt-1">{type === "music" ? "识曲" : "榜单"}</span>
+            <span className="text-xs mt-1">
+              {type === "music" ? "识曲" : "榜单"}
+            </span>
           </div>
 
           <div className="flex flex-col items-center">
@@ -436,7 +487,7 @@ export default function SearchPage({ type, onBack, setHideNavigation }: SearchPa
                   key={item.id}
                   className={cn(
                     "bg-[#2a2a2a] rounded-full px-4 py-2 text-sm flex items-center",
-                    item.hot && "bg-opacity-70",
+                    item.hot && "bg-opacity-70"
                   )}
                   onClick={() => handlePopularSearchClick(item.text)}
                 >
@@ -464,10 +515,14 @@ export default function SearchPage({ type, onBack, setHideNavigation }: SearchPa
                     <div className="flex items-center">
                       <h3 className="text-sm font-medium">{item.title}</h3>
                       {item.tag && (
-                        <span className="ml-2 text-xs px-1.5 py-0.5 bg-emerald-400 text-black rounded">{item.tag}</span>
+                        <span className="ml-2 text-xs px-1.5 py-0.5 bg-emerald-400 text-black rounded">
+                          {item.tag}
+                        </span>
                       )}
                     </div>
-                    <p className="text-xs text-gray-400 mt-1">{item.description}</p>
+                    <p className="text-xs text-gray-400 mt-1">
+                      {item.description}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -476,5 +531,5 @@ export default function SearchPage({ type, onBack, setHideNavigation }: SearchPa
         </>
       )}
     </div>
-  )
+  );
 }

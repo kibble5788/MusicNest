@@ -2,9 +2,10 @@
   "name": "music-h5",
   "version": "0.1.0",
   "private": true,
+  "homepage": "./",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && cd build/music && cordova build ios ",
     "start": "next start",
     "lint": "next lint"
   },

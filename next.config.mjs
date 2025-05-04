@@ -1,6 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output:'export',
+  output: "export",
+  basePath: "",
+  assetPrefix: ".",
+  distDir: "build/music/www",
+
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -10,9 +14,9 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  assetPrefix: '',
-  basePath: '',
+  assetPrefix: "",
+  basePath: "",
   trailingSlash: true,
-}
+};
 
-export default nextConfig
+export default nextConfig;

@@ -7,8 +7,7 @@
 /.next/
 /out/
 
-# production
-/build
+ 
 
 # debug
 npm-debug.log*
@@ -25,3 +24,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+.DS_Store
+build/music/www/
